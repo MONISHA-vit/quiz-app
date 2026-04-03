@@ -1,0 +1,16 @@
+### Get Quiz
+GET http://localhost:3000/quiz
+
+### Attempt Quiz
+POST http://localhost:3000/attempt
+Content-Type: application/json
+
+{
+  "answers": [
+    "JavaScript",
+    "Joyent",
+    "MongoDB",
+    "HTTPS",
+    "React"
+  ]
+}

@@ -1,0 +1,64 @@
+const express = require("express");
+const path = require("path");
+
+const app = express();
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// Professional MCQ quiz
+let quiz = [
+  {
+    question: "Which language is primarily used for client-side web development?",
+    options: ["Python", "Java", "JavaScript", "C++"],
+    answer: "JavaScript"
+  },
+  {
+    question: "Which company originally developed Node.js?",
+    options: ["Google", "Microsoft", "Joyent", "IBM"],
+    answer: "Joyent"
+  },
+  {
+    question: "Which database is classified as NoSQL?",
+    options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
+    answer: "MongoDB"
+  },
+  {
+    question: "Which protocol ensures secure communication over the web?",
+    options: ["HTTP", "FTP", "HTTPS", "SMTP"],
+    answer: "HTTPS"
+  },
+  {
+    question: "Which of the following is a frontend JavaScript library?",
+    options: ["Django", "Spring", "React", "Laravel"],
+    answer: "React"
+  }
+];
+
+// Serve UI
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// Get quiz
+app.get("/quiz", (req, res) => {
+  res.json(quiz);
+});
+
+// Submit answers
+app.post("/attempt", (req, res) => {
+  const answers = req.body.answers;
+  let score = 0;
+
+  answers.forEach((ans, i) => {
+    if (ans === quiz[i].answer) score++;
+  });
+
+  res.json({
+    score,
+    total: quiz.length
+  });
+});
+
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
