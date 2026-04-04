@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
+app.use(express.static("public")); // ✅ AFTER app is created
 
-// 5 MCQ Questions (Create Quiz)
+// 5 MCQ Questions
 let quiz = [
   {
     question: "Which language is primarily used for client-side web development?",
@@ -32,20 +33,17 @@ let quiz = [
   }
 ];
 
-// API: Get quiz
+// GET quiz
 app.get("/quiz", (req, res) => {
   res.json(quiz);
 });
 
-// API: Attempt quiz
+// POST attempt
 app.post("/attempt", (req, res) => {
   const answers = req.body.answers;
 
-  // validation
   if (!answers || answers.length !== quiz.length) {
-    return res.status(400).json({
-      error: "Invalid answers"
-    });
+    return res.status(400).json({ error: "Invalid answers" });
   }
 
   let score = 0;
@@ -62,5 +60,5 @@ app.post("/attempt", (req, res) => {
 
 // Start server
 app.listen(3000, () => {
-  console.log("v1 running on port 3000");
+  console.log("v2 running on port 3000");
 });
