@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
-app.use(express.static("public")); // ✅ AFTER app is created
+app.use(express.static("public"));
 
-// 5 MCQ Questions
+// Quiz Data
 let quiz = [
   {
     question: "Which language is primarily used for client-side web development?",
@@ -38,7 +38,7 @@ app.get("/quiz", (req, res) => {
   res.json(quiz);
 });
 
-// POST attempt
+// POST attempt (v3 enhanced)
 app.post("/attempt", (req, res) => {
   const answers = req.body.answers;
 
@@ -47,18 +47,30 @@ app.post("/attempt", (req, res) => {
   }
 
   let score = 0;
+  let details = [];
 
   answers.forEach((ans, i) => {
-    if (ans === quiz[i].answer) score++;
+    const correct = quiz[i].answer;
+    const isCorrect = ans === correct;
+
+    if (isCorrect) score++;
+
+    details.push({
+      question: quiz[i].question,
+      selected: ans,
+      correct: correct,
+      isCorrect: isCorrect
+    });
   });
 
   res.json({
     score,
-    total: quiz.length
+    total: quiz.length,
+    details
   });
 });
 
 // Start server
 app.listen(3000, () => {
-  console.log("v2 running on port 3000");
+  console.log("v3 running on port 3000");
 });
