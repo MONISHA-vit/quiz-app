@@ -23,7 +23,6 @@ pipeline {
         bat 'where docker'
         bat 'docker --version'
     }
-}
 
         stage('Run Container') {
             steps {
@@ -39,4 +38,5 @@ pipeline {
             }
         }
     }
-}
+}}
+    
