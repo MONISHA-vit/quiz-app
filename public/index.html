@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Quiz App v2</title>
+  <title>Quiz App v3</title>
 
   <style>
     body {
@@ -22,7 +22,6 @@
 
     h1 {
       text-align: center;
-      color: #333;
     }
 
     .question {
@@ -31,18 +30,12 @@
       border-bottom: 1px solid #ddd;
     }
 
-    .question p {
-      font-weight: bold;
-    }
-
     label {
       display: block;
       margin: 5px 0;
-      cursor: pointer;
     }
 
     button {
-      display: block;
       width: 100%;
       padding: 12px;
       background: #007bff;
@@ -59,25 +52,37 @@
 
     #result {
       margin-top: 20px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: green;
+    }
+
+    .result-item {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    .correct {
+      background-color: #d4edda;
+      border-left: 6px solid green;
+    }
+
+    .wrong {
+      background-color: #f8d7da;
+      border-left: 6px solid red;
     }
   </style>
 
 </head>
 <body>
 
-  <div class="container">
-    <h1>Quiz Application</h1>
+<div class="container">
+  <h1>Quiz Application</h1>
 
-    <form id="quizForm"></form>
+  <form id="quizForm"></form>
 
-    <button onclick="submitQuiz()">Submit Quiz</button>
+  <button onclick="submitQuiz()">Submit Quiz</button>
 
-    <div id="result"></div>
-  </div>
+  <div id="result"></div>
+</div>
 
 <script>
 async function loadQuiz() {
@@ -89,7 +94,7 @@ async function loadQuiz() {
   quiz.forEach((q, i) => {
     let html = `
       <div class="question">
-        <p>${i + 1}. ${q.question}</p>
+        <p><b>${i + 1}. ${q.question}</b></p>
     `;
 
     q.options.forEach(opt => {
@@ -124,8 +129,19 @@ async function submitQuiz() {
 
   const data = await res.json();
 
-  document.getElementById('result').innerText =
-    `Score: ${data.score} / ${data.total}`;
+  let output = `<h3>Score: ${data.score} / ${data.total}</h3>`;
+
+  data.details.forEach(d => {
+    output += `
+      <div class="result-item ${d.isCorrect ? 'correct' : 'wrong'}">
+        <p><b>${d.question}</b></p>
+        <p>Your answer: ${d.selected || "Not answered"}</p>
+        <p>Correct answer: ${d.correct}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById('result').innerHTML = output;
 }
 
 loadQuiz();
