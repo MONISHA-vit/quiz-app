@@ -18,6 +18,11 @@ pipeline {
                 sh "docker build -t quiz-app:${params.VERSION} ."
             }
         }
+        stage('Check Files') {
+    steps {
+        bat 'dir'
+    }
+
         stage('Check Docker') {
     steps {
         bat 'where docker'
@@ -36,7 +41,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }}
     }
 }}
     
