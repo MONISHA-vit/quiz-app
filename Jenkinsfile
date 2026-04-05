@@ -22,8 +22,8 @@ pipeline {
 
         stage('Push to DockerHub') {
             steps {
-                bat 'docker tag quiz-app:v2 yourusername/quiz-app:v2'
-                bat 'docker push yourusername/quiz-app:v2'
+                bat 'docker tag quiz-app:v2 MONISHA-vit/quiz-app:v2'
+                bat 'docker push MONISHA-vit/quiz-app:v2'
             }
         }
     }
