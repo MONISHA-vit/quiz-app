@@ -2,9 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout SCM') {
+
+        stage('Clone Code') {
             steps {
-                git branch: 'v2', url: 'https://github.com/MONISHA-vit/quiz-app.git'
+                git branch: 'v2',
+                url: 'https://github.com/MONISHA-vit/quiz-app.git'
+            }
+        }
+
+        stage('Check Files') {
+            steps {
+                bat 'dir'
             }
         }
 
@@ -14,17 +22,11 @@ pipeline {
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run Container') {
             steps {
                 bat 'docker run -d -p 3002:3000 quiz-app:v2'
             }
         }
 
-        stage('Push to DockerHub') {
-            steps {
-                bat 'docker tag quiz-app:v2 MONISHA-vit/quiz-app:v2'
-                bat 'docker push MONISHA-vit/quiz-app:v2'
-            }
-        }
     }
 }
